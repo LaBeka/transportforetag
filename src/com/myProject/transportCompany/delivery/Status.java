@@ -2,8 +2,8 @@ package com.myProject.transportCompany.delivery;
 
 public enum Status {
     START("start"),
-    ON_GOING("onGoing"),
-    DELIVERED("delivered"),
+    IN_PROGRESS("inProgress"),
+    COMPLETED("completed"),
     CANCELLED("cancelled"),
     DELAYED("delayed");
 

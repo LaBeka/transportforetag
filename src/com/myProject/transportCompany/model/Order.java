@@ -79,9 +79,9 @@ public class Order {
             double multiplier =  1.55;
             result = baseCost * multiplier;
         } else {
-            Optional<Vehicle> assignedTruck = VehicleManagerBuilder.getInstance().assignTruckToOrder(this);
+            vehicle = VehicleManagerBuilder.getInstance().assignTruckToOrder(this);
 
-            if(assignedTruck.isEmpty()){
+            if(vehicle.isEmpty()){
                 throw new VehicleNotAvailableException("Exception: No available truck to assign for slow delivery.");
             }
             double multiplier =  1.05;

@@ -1,6 +1,10 @@
 package com.myProject.transportCompany.generatemodels;
 
 import com.myProject.transportCompany.InputHandler;
+import com.myProject.transportCompany.delivery.Delivery;
+import com.myProject.transportCompany.delivery.deliveryStrategy.DeliveryStrategy;
+import com.myProject.transportCompany.delivery.deliveryStrategy.TruckDeliveryStrategy;
+import com.myProject.transportCompany.delivery.deliveryStrategy.VanDeliveryStrategy;
 import com.myProject.transportCompany.interfaces.IOrderManager;
 import com.myProject.transportCompany.model.Customer;
 import com.myProject.transportCompany.model.Location;
@@ -127,6 +131,17 @@ public class OrderManager implements IOrderManager {
             System.out.println("Sorry, I can not take your order!");
         } else {
             newOrder.ifPresent(order -> {
+
+                Vehicle vehicle = order.getVehicle();
+                Delivery delivery;
+
+                if (vehicle.getType().equalsIgnoreCase("van")) {
+                    delivery = new Delivery(order, customer, route, "package", new VanDeliveryStrategy());
+                } else {
+                    delivery = new Delivery(order, customer, route, "package", new TruckDeliveryStrategy(vehicle.getCapacity()));
+                }
+
+                delivery.startDelivery();
 
                 currentOrder = order;
             });

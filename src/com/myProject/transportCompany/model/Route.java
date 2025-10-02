@@ -99,10 +99,6 @@ public class Route {
             this.distance = RouteManager.getRouteInstance().getStraightDistances(start, destination);
             return this;
         }
-//        public Builder intermediateCities() {
-//            this.intermediateCities = intermediateCities;
-//            return this;
-//        }
         public Route build() {
             return new Route(this);
         }

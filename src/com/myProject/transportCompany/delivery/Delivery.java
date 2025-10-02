@@ -1,5 +1,6 @@
 package com.myProject.transportCompany.delivery;
 
+import com.myProject.transportCompany.delivery.deliveryStrategy.DeliveryStrategy;
 import com.myProject.transportCompany.model.Customer;
 import com.myProject.transportCompany.model.Order;
 import com.myProject.transportCompany.model.Route;
@@ -11,15 +12,26 @@ public class Delivery {
     private Status status;
     private Order order;
 
-    public Delivery(Order order, Customer customer, Route route, String load) {
+    private DeliveryStrategy deliveryStrategy;
+
+    public Delivery(Order order, Customer customer, Route route, String load, DeliveryStrategy strategy) {
         this.order = order;
         this.customer = customer;
         this.route = route;
         this.status = Status.START;
+        this.deliveryStrategy = strategy;
     }
 
     public Customer getDriver() {
         return customer;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public Order getOrder() {
+        return order;
     }
 
     public void setDriver(Customer customer) {
@@ -40,5 +52,9 @@ public class Delivery {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public void startDelivery() {
+        deliveryStrategy.executeDelivery(this);
     }
 }
