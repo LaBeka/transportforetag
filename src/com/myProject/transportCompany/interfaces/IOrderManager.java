@@ -19,4 +19,5 @@ public interface IOrderManager {
     void completeOrder(Order order);
     void print();
     void updateCurrentOrder(Order order);
+
 }

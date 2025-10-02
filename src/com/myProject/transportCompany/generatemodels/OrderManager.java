@@ -36,11 +36,6 @@ public class OrderManager implements IOrderManager {
     }
 
     @Override
-    public void initiateOrderManager(List<Customer> customers, List<Vehicle> vehicles) {
-        runOrderMenu();
-    }
-
-    @Override
     public void print() {
         ordersHistory.forEach(System.out::println);
         System.out.println();
@@ -158,5 +153,32 @@ public class OrderManager implements IOrderManager {
         orderMenu.put("This is how numbers look like: ", this::discussOrder);
 
         InputHandler.runMainMenu(scanner, orderMenu);
+    }
+
+    private void startAutoSettingOrder() {
+        Thread updater = new Thread(() -> {
+            while (true) {
+                try {
+                    Thread.sleep(750); // 0.5s refresh
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    break;
+                }
+
+                // Print status of vehicles + deliveries
+                System.out.println("\n[Auto Update]");
+                VehicleManagerBuilder.getInstance().printAvailableVehicles();
+                CustomerManager.getInstance().printPendingCustomers();
+                // optionally show deliveries in progress/history
+            }
+        });
+        updater.setDaemon(true); // so it won’t block program exit
+        updater.start();
+    }
+
+    @Override
+    public void initiateOrderManager(List<Customer> customers, List<Vehicle> vehicles) {
+        startAutoSettingOrder();
+        runOrderMenu();
     }
 }
