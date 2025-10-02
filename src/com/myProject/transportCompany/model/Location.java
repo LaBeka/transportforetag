@@ -1,0 +1,13 @@
+package com.myProject.transportCompany.model;
+
+public class Location {
+    private String city;
+
+    public Location(String city) {
+        this.city = city;
+    }
+
+    public String getCity() {
+        return city;
+    }
+}

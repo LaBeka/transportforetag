@@ -1,0 +1,208 @@
+
+public class Logger {
+    // TODO: skapa en privat statisk instans
+Expand
+design_patterns_tasks.md
+4 KB
+﻿
+# Java Design Patterns – Uppgifter
+
+## 📝 Uppgift 1 – Singleton (Logger)
+```java
+public class Logger {
+    // TODO: skapa en privat statisk instans
+
+    // TODO: privat konstruktor
+
+    // TODO: metod getInstance() som returnerar instansen
+
+    public void log(String message) {
+        System.out.println("LOG: " + message);
+    }
+}
+
+class Main {
+    public static void main(String[] args) {
+        // TODO: hämta instansen två gånger och jämför
+    }
+}
+```
+
+---
+
+## 📝 Uppgift 2 – Strategy (Calculator)
+```java
+interface Operation {
+    int execute(int a, int b);
+}
+
+class Addition implements Operation {
+    // TODO: implementera execute
+}
+
+class Subtraction implements Operation {
+    // TODO: implementera execute
+}
+
+class Multiplication implements Operation {
+    // TODO: implementera execute
+}
+
+class Calculator {
+    private Operation operation;
+
+    public Calculator(Operation operation) {
+        this.operation = operation;
+    }
+
+    public int calculate(int a, int b) {
+        // TODO: använd operation.execute
+        return 0;
+    }
+}
+
+class Main {
+    public static void main(String[] args) {
+        // TODO: testa Addition, Subtraction och Multiplication
+    }
+}
+```
+
+---
+
+## 📝 Uppgift 3 – Observer (News)
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+interface Observer {
+    void update(String news);
+}
+
+class NewsChannel implements Observer {
+    private String name;
+
+    public NewsChannel(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public void update(String news) {
+        // TODO: skriv ut "Channel X received: news"
+    }
+}
+
+class NewsAgency {
+    private List<Observer> observers = new ArrayList<>();
+
+    public void addObserver(Observer o) {
+        // TODO
+    }
+
+    public void removeObserver(Observer o) {
+        // TODO
+    }
+
+    public void setNews(String news) {
+        // TODO: notifiera alla observatörer
+    }
+}
+
+class Main {
+    public static void main(String[] args) {
+        // TODO: skapa agency + flera channels, testa
+    }
+}
+```
+
+---
+
+## 📝 Uppgift 4 – Decorator (Coffee)
+```java
+interface Coffee {
+    double getCost();
+    String getDescription();
+}
+
+class SimpleCoffee implements Coffee {
+    @Override
+    public double getCost() {
+        return 10;
+    }
+
+    @Override
+    public String getDescription() {
+        return "Simple coffee";
+    }
+}
+
+class CoffeeDecorator implements Coffee {
+    protected Coffee coffee;
+
+    public CoffeeDecorator(Coffee coffee) {
+        this.coffee = coffee;
+    }
+
+    @Override
+    public double getCost() {
+        return coffee.getCost();
+    }
+
+    @Override
+    public String getDescription() {
+        return coffee.getDescription();
+    }
+}
+
+class MilkDecorator extends CoffeeDecorator {
+    // TODO: lägg till 2 i pris och " + milk" i description
+}
+
+class SugarDecorator extends CoffeeDecorator {
+    // TODO: lägg till 1 i pris och " + sugar" i description
+}
+
+class Main {
+    public static void main(String[] args) {
+        // TODO: skapa SimpleCoffee + dekorera med Milk och Sugar
+    }
+}
+```
+
+---
+
+## 📝 Uppgift 5 – Factory Method (Shapes)
+```java
+interface Shape {
+    void draw();
+}
+
+class Circle implements Shape {
+    @Override
+    public void draw() {
+        System.out.println("Drawing Circle");
+    }
+}
+
+class Rectangle implements Shape {
+    @Override
+    public void draw() {
+        System.out.println("Drawing Rectangle");
+    }
+}
+
+class ShapeFactory {
+    public Shape createShape(String type) {
+        // TODO: returnera rätt shape beroende på type
+        return null;
+    }
+}
+
+class Main {
+    public static void main(String[] args) {
+        // TODO: skapa fabriken och rita några shapes
+    }
+}
+```
+design_patterns_tasks.md
+4 KB
