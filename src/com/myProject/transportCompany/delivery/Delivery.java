@@ -1,6 +1,7 @@
 package com.myProject.transportCompany.delivery;
 
 import com.myProject.transportCompany.model.Customer;
+import com.myProject.transportCompany.model.Order;
 import com.myProject.transportCompany.model.Route;
 
 public class Delivery {
@@ -8,8 +9,10 @@ public class Delivery {
     private String load;
     private Route route;
     private Status status;
+    private Order order;
 
-    public Delivery(Customer customer, Route route, String load) {
+    public Delivery(Order order, Customer customer, Route route, String load) {
+        this.order = order;
         this.customer = customer;
         this.route = route;
         this.status = Status.START;

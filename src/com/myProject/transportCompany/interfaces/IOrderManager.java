@@ -13,7 +13,7 @@ public interface IOrderManager {
 
     void discussOrder();
 
-    void createRoute(Customer customer);
+    void createDelivery(Customer customer);
 
     void chooseCustomer(Scanner scanner);
     void completeOrder(Order order);

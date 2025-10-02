@@ -67,26 +67,33 @@ public class Order {
         double weight = this.customer.getWeight();
         double distance = this.route.getDistance();
         double baseCost = weight * distance * baseRate;
+
+        Optional<Vehicle> vehicle = Optional.empty();
+        double result = 0.0;
         if(deliverySpeed[0].equalsIgnoreCase("fast")){
-            //if it customer initially wants to order a fast delivery,
-            // Van gets assigned to it because vans drive single routes
-            Optional<Vehicle> assignedVan = VehicleManagerBuilder.getInstance().assignVanToOrder(this);
-            if(assignedVan.isEmpty()){
+            //if it customer initially wants to order a fast delivery,  Van gets assigned to it because vans drive single routes
+            vehicle = VehicleManagerBuilder.getInstance().assignVanToOrder(this);
+            if(vehicle.isEmpty()){
                 throw new VehicleNotAvailableException("Exception: No available van to assign for fast delivery.");
             }
-            this.vehicle = assignedVan.get();
             double multiplier =  1.55;
-            return baseCost * multiplier;
+            result = baseCost * multiplier;
         } else {
             Optional<Vehicle> assignedTruck = VehicleManagerBuilder.getInstance().assignTruckToOrder(this);
 
             if(assignedTruck.isEmpty()){
                 throw new VehicleNotAvailableException("Exception: No available truck to assign for slow delivery.");
             }
-            this.vehicle = assignedTruck.get();
             double multiplier =  1.05;
-            return baseCost * multiplier;
+            result = baseCost * multiplier;
         }
+
+        vehicle.ifPresent(v -> {
+            this.vehicle = v;
+            v.setCapacity(-customer.getWeight());
+            v.setAvailable(false);
+        });
+        return result;
     }
 
     private Order(Builder builder) {

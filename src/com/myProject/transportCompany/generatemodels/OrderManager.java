@@ -98,12 +98,12 @@ public class OrderManager implements IOrderManager {
             choice = scanner.nextLine();
             customer = CustomerManager.getInstance().getOneCustomer(choice);
         }
-        System.out.println(STR."Customer \{customer.toString()} has been selected.");
-        createRoute(customer);
+        System.out.printf("\nCustomer '%s' has been selected.\n", customer.getName());
+        createDelivery(customer);
     }
 
     @Override
-    public void createRoute(Customer customer) {
+    public void createDelivery(Customer customer) {
         String [] part = customer.getDestinationInfo().split(" ");
         Location start = new Location(part[0]);
         Location end = new Location(part[1]);
@@ -127,8 +127,7 @@ public class OrderManager implements IOrderManager {
             System.out.println("Sorry, I can not take your order!");
         } else {
             newOrder.ifPresent(order -> {
-                order.getVehicle().setCapacity(-customer.getWeight());
-                order.getVehicle().setAvailable(false);
+
                 currentOrder = order;
             });
         }
