@@ -12,6 +12,9 @@ public class DriverManager implements IDriverCreator {
 
     static DriverManager driverManager;
 
+    private DriverManager() {
+        initializeDrivers();
+    }
     @Override
     public Map<String, Driver> getDrivers(){
         return Collections.unmodifiableMap(this.drivers);

@@ -2,7 +2,7 @@ package com.myProject.transportCompany.interfaces;
 
 import com.myProject.transportCompany.model.Driver;
 import com.myProject.transportCompany.model.Order;
-import com.myProject.transportCompany.model.vehicle.Vehicle;
+import com.myProject.transportCompany.builderObject.Vehicle;
 
 import java.util.List;
 import java.util.Optional;

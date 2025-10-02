@@ -1,9 +1,9 @@
 package com.myProject.transportCompany.model;
 
 
-import com.myProject.transportCompany.generatemodels.VehicleManager;
-import com.myProject.transportCompany.model.vehicle.Vehicle;
+import com.myProject.transportCompany.builderObject.Vehicle;
 import com.myProject.transportCompany.discountstrategy.RouteStrategy;
+import com.myProject.transportCompany.generatemodels.VehicleManagerBuilder;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -69,13 +69,13 @@ public class Order {
         double distance = this.route.getDistance();
         double baseCost = weight * distance * baseRate;
         if(deliverySpeed[0].equalsIgnoreCase("fast")){
-            Optional<Vehicle> assignedVan = VehicleManager.getInstance().assignVanToOrder(this);
+            Optional<Vehicle> assignedVan = VehicleManagerBuilder.getInstance().assignVanToOrder(this);
             assignedVan.ifPresent(value -> this.vehicle = value);
 
             double multiplier =  1.55;
             return baseCost * multiplier;
         } else {
-            Optional<Vehicle> assignedTruck = VehicleManager.getInstance().assignTruckToOrder(this);
+            Optional<Vehicle> assignedTruck = VehicleManagerBuilder.getInstance().assignTruckToOrder(this);
             assignedTruck.ifPresent(value -> this.vehicle = value);
 
             double multiplier =  1.05;

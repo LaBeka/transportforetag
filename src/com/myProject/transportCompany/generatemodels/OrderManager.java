@@ -6,7 +6,7 @@ import com.myProject.transportCompany.model.Customer;
 import com.myProject.transportCompany.model.Location;
 import com.myProject.transportCompany.model.Order;
 import com.myProject.transportCompany.model.Route;
-import com.myProject.transportCompany.model.vehicle.Vehicle;
+import com.myProject.transportCompany.builderObject.Vehicle;
 
 import java.util.*;
 
@@ -38,9 +38,7 @@ public class OrderManager implements IOrderManager {
 
     @Override
     public void print() {
-        for (Order o : ordersHistory) {
-            System.out.println(o.toString());
-        }
+        ordersHistory.forEach(System.out::println);
         System.out.println();
     }
 
@@ -80,7 +78,7 @@ public class OrderManager implements IOrderManager {
         order.setCompleted(true);
 
         CustomerManager.getInstance().updateCustomer(order);
-        VehicleManager.getInstance().updateVehicle(order);
+        VehicleManagerBuilder.getInstance().updateVehicle(order);
         currentOrder = null;
     }
 
@@ -93,13 +91,14 @@ public class OrderManager implements IOrderManager {
         }
         System.out.print("Enter customer name:");
         String choice = scanner.nextLine();
-        Customer customer = CustomerManager.getInstance().getOneCustomer(choice);
+        Customer customer = null;
 
-        if(customer == null){
-            System.out.println("Customer " + choice + " not found");
-            chooseCustomer(scanner);
+        while(customer == null){
+            System.out.println("Customer " + choice + " not found, enter name again: ");
+            choice = scanner.nextLine();
+            customer = CustomerManager.getInstance().getOneCustomer(choice);
         }
-        System.out.println(STR."Customer \{customer.toString()} has been selected.\n");
+        System.out.println(STR."Customer \{customer.toString()} has been selected.");
         createRoute(customer);
     }
 

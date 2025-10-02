@@ -3,7 +3,6 @@ package com.myProject.transportCompany.model;
 import com.myProject.transportCompany.generatemodels.RouteManager;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Route {

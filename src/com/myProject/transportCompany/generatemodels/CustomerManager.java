@@ -19,7 +19,7 @@ public class CustomerManager implements ICustomerCreator {
 
     public static CustomerManager getInstance() {
         if (customerInstance == null) {
-            synchronized (VehicleManager.class) {
+            synchronized (CustomerManager.class) {
                 if (customerInstance == null) {
                     customerInstance = new CustomerManager();
                 }
@@ -54,39 +54,29 @@ public class CustomerManager implements ICustomerCreator {
 
     @Override
     public void print() {
-        for (Customer c : customers) {
-            System.out.println(c.toString());
-        }
+        customers.forEach(System.out::println);
         System.out.println();
     }
     @Override
     public void printCustomersInTheQueue() {
         System.out.println("Take order of these customers:");
-        for (Customer c : customers) {
-            if(!c.isServed()) {
-                System.out.println(c.toString());
-            }
-        }
+        customers.forEach(c ->  System.out.println(c.toString()));
         System.out.println();
     }
 
     @Override
     public Customer getOneCustomer(String customerName) {
-        for (Customer c : customers) {
-            if (customerName.equalsIgnoreCase(c.getName())) {
-                return c;
-            }
-        }
-        return null;
+        return customers.stream()
+                .filter(c -> c.getName().equalsIgnoreCase(customerName))
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
     public void updateCustomer(Order order){
-        for (Customer c : customers) {
-            if (order.getCustomer().equals(c)) {
-                c.setServed(true);
-                break;
-            }
-        }
+        customers.stream()
+                .filter( c -> c.equals(order.getCustomer()))
+                .findFirst()
+                .ifPresent(customer -> customer.setServed(true));
     }
 }

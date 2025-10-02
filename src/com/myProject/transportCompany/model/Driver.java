@@ -1,6 +1,6 @@
 package com.myProject.transportCompany.model;
 
-import com.myProject.transportCompany.model.vehicle.Vehicle;
+import com.myProject.transportCompany.builderObject.Vehicle;
 
 public class Driver {
     private String name;
