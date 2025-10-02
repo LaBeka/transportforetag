@@ -33,28 +33,16 @@ public class VehicleManagerBuilder implements IVehicleCreator {
 
     @Override
     public Optional<Vehicle> assignVanToOrder(Order order) {
-        Vehicle van = null;
-        for (Vehicle v : vehicles) {
-            if(v.isAvailable() && v.getType().equalsIgnoreCase("van")) {
-                v.assignVehicleToOrder(order);
-                van = v;
-                break;
-            }
-        }
-        return Optional.of(van);
+        return vehicles.stream()
+                .filter(vehicle -> vehicle.isAvailable() && vehicle.getType().equalsIgnoreCase("van"))
+                .findFirst();
     }
 
     @Override
     public Optional<Vehicle> assignTruckToOrder(Order order) {
-        Vehicle van = null;
-        for (Vehicle v : vehicles) {
-            if(v.isAvailable() && v.getType().equalsIgnoreCase("truck")) {
-                v.assignVehicleToOrder(order);
-                van = v;
-                break;
-            }
-        }
-        return Optional.of(van);
+        return vehicles.stream()
+                .filter(v -> v.isAvailable() && v.getType().equalsIgnoreCase("truck"))
+                .findFirst();
     }
 
     @Override
@@ -64,30 +52,30 @@ public class VehicleManagerBuilder implements IVehicleCreator {
 
     @Override
     public void printNoDriverVehicles() {
-        for (Vehicle v : vehicles) {
-            if(!v.hasDriver()) {
-                System.out.println(v.toString());
-            }
-        }
+        vehicles.stream()
+                .filter(v -> !v.hasDriver())
+                .forEach(vehicle -> System.out.println(vehicle.toString()));
+
+//        for (Vehicle v : vehicles) {
+//            if(!v.hasDriver()) {
+//                System.out.println(v.toString());
+//            }
+//        }
         System.out.println();
     }
 
     @Override
     public void printAvailableVehicles() {
-        for (Vehicle v : vehicles) {
-            if(v.isAvailable()) {
-                System.out.println(v.toString());
-            }
-        }
+        vehicles.stream()
+                .filter(Vehicle::isAvailable)
+                .forEach(vehicle -> System.out.println(vehicle.toString()));
         System.out.println();
     }
 
     @Override
     public void print() {
         System.out.println("Vehicle: ");
-        for (Vehicle v : vehicles) {
-            System.out.println(v.toString());
-        }
+        vehicles.forEach(vehicle -> System.out.println(vehicle.toString()));
         System.out.println();
     }
 
@@ -159,6 +147,6 @@ public class VehicleManagerBuilder implements IVehicleCreator {
         vehicles.stream()
                 .filter(vehicle -> vehicle.equals(order.getVehicle()))
                 .findFirst()
-                .ifPresent(vehicle -> {vehicle.setAvailable(false);});
+                .ifPresent(vehicle -> {vehicle.setAvailable(true);});
     }
 }

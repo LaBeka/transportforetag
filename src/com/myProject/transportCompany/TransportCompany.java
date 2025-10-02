@@ -13,7 +13,7 @@ public class TransportCompany {
 
     private TransportCompany() {}
 
-    public void runMenu() {
+    public void runCompanyMenu() {
         Scanner scanner = new Scanner(System.in);
         Map<String, Runnable> menu = new LinkedHashMap<>();
         menu.put("List drivers", () -> DriverManager.getInstance().printDriverList());
@@ -42,7 +42,7 @@ public class TransportCompany {
         List<Driver> driverList = DriverManager.getInstance().getDriverList();
         VehicleManagerBuilder.getInstance().initializeVehicles(driverList);
         CustomerManager.getInstance().getList();
-        runMenu();
+        runCompanyMenu();
     }
 
     public static TransportCompany getInstance(){

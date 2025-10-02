@@ -38,6 +38,10 @@ public abstract class Vehicle implements Assignable {
 
     public double getCapacity() { return capacity;}
 
+    public void setCapacity(double capacity) {
+        this.capacity += capacity;
+    }
+
     public Driver getDriver() { return driver; }
 
     public boolean isAvailable() { return isAvailable; }

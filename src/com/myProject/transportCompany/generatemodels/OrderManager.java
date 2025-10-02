@@ -61,7 +61,7 @@ public class OrderManager implements IOrderManager {
 
         Scanner scanner = new Scanner(System.in);
         Map<String, Runnable> orderMenu = new LinkedHashMap<>();
-        orderMenu.put("Do you want to complete", () -> completeOrder(currentOrder));
+        orderMenu.put("Do you want to complete the order without negotiating ", () -> completeOrder(currentOrder));
         orderMenu.put("Let's negotiate ", () -> RouteManager.getRouteInstance().negotiatingMenu(currentOrder));
 
         InputHandler.runMainMenu(scanner, orderMenu);
@@ -91,10 +91,10 @@ public class OrderManager implements IOrderManager {
         }
         System.out.print("Enter customer name:");
         String choice = scanner.nextLine();
-        Customer customer = null;
+        Customer customer = CustomerManager.getInstance().getOneCustomer(choice);;
 
         while(customer == null){
-            System.out.println("Customer " + choice + " not found, enter name again: ");
+            System.out.printf("\nCustomer %s not found, enter name again:  ", choice);
             choice = scanner.nextLine();
             customer = CustomerManager.getInstance().getOneCustomer(choice);
         }
@@ -115,16 +115,31 @@ public class OrderManager implements IOrderManager {
                 .distance(start, end)
                 .build();
 
-        //price gets created Order.calculateTotal()
-        currentOrder = new Order.Builder()
+        //price gets created Order.calculateTotal() & vehicle gets assigned, who will deliver the delivery
+        Optional<Order> newOrder = new Order.Builder()
                 .customer(customer)
                 .route(route)
+                .id()
                 .build();
+
+        if(newOrder.isEmpty()){
+            customer.updateComplaintCount(+1);
+            System.out.println("Sorry, I can not take your order!");
+        } else {
+            newOrder.ifPresent(order -> {
+                order.getVehicle().setCapacity(-customer.getWeight());
+                order.getVehicle().setAvailable(false);
+                currentOrder = order;
+            });
+        }
     }
 
     private void runOrderMenu() {
         Scanner scanner = new Scanner(System.in);
         Map<String, Runnable> orderMenu = new LinkedHashMap<>();
+        if(currentOrder != null){
+            System.out.println("You have order to complete");
+        }
         orderMenu.put("Choose customer", () -> chooseCustomer(scanner));
         orderMenu.put("This is how numbers look like: ", this::discussOrder);
 

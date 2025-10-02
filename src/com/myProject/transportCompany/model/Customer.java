@@ -6,6 +6,7 @@ public class Customer {
     private String packageInfo;
     private double weight;
     private boolean isServed;
+    private int complaintCount;
 
     public Customer(String name, String destinationInfo, String packageInfo, double weight) {
         this.name = name;
@@ -13,6 +14,7 @@ public class Customer {
         this.packageInfo = packageInfo;
         this.weight = weight;
         this.isServed = false;
+        this.complaintCount = 0;
     }
 
     public String getDestinationInfo() {
@@ -21,6 +23,14 @@ public class Customer {
 
     public void setDestinationInfo(String destinationInfo) {
         this.destinationInfo = destinationInfo;
+    }
+
+    public int getComplaintCount() {
+        return complaintCount;
+    }
+
+    public void updateComplaintCount(int complaintCount) {
+        this.complaintCount += complaintCount;
     }
 
     public String getName() {
