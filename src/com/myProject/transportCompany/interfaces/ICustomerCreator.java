@@ -11,7 +11,7 @@ public interface ICustomerCreator {
     List<Customer> getList();
     void createCustomer(Customer customer);
     public void print();
-    void printCustomersInTheQueue();
+    void printPendingCustomers();
     Customer getOneCustomer(String customerName);
     void updateCustomer(Order order);
 }

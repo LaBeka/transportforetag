@@ -7,6 +7,6 @@ public class Main {
         Application app = new Application();
 //        app.run();
 
-        TransportCompany.getInstance().run();
+        TransportCompany.getInstance().autoRun();
     }
 }

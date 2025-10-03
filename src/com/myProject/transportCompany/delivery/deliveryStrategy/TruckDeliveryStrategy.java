@@ -2,6 +2,7 @@ package com.myProject.transportCompany.delivery.deliveryStrategy;
 
 import com.myProject.transportCompany.delivery.Delivery;
 import com.myProject.transportCompany.delivery.Status;
+import com.myProject.transportCompany.generatemodels.OrderManager;
 
 import java.util.*;
 
@@ -37,6 +38,8 @@ public class TruckDeliveryStrategy implements DeliveryStrategy {
             }
             queuedDeliveries.clear();
             currentLoad = 0;
+            OrderManager.getInstance().completeOrder(delivery.getOrder());
+
         }
     }
 }

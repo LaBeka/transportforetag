@@ -66,6 +66,7 @@ public class VehicleManagerBuilder implements IVehicleCreator {
 
     @Override
     public void printAvailableVehicles() {
+        System.out.println("Available Vehicles: ");
         vehicles.stream()
                 .filter(Vehicle::isAvailable)
                 .forEach(vehicle -> System.out.println(vehicle.toString()));

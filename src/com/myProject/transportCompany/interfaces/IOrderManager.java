@@ -2,22 +2,20 @@ package com.myProject.transportCompany.interfaces;
 
 import com.myProject.transportCompany.model.Customer;
 import com.myProject.transportCompany.model.Order;
-import com.myProject.transportCompany.builderObject.Vehicle;
 
-import java.util.List;
 import java.util.Scanner;
 
 public interface IOrderManager {
 
-    void initiateOrderManager(List<Customer> customers, List<Vehicle> vehicles);
+    void initiateOrderManager();
 
-    void discussOrder();
+    void discussOrder(Integer... choice);
 
     void createDelivery(Customer customer);
 
     void chooseCustomer(Scanner scanner);
     void completeOrder(Order order);
-    void print();
+    void printOrderHistory();
     void updateCurrentOrder(Order order);
 
 }

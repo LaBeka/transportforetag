@@ -2,7 +2,6 @@ package com.myProject.transportCompany.generatemodels;
 
 import com.myProject.transportCompany.InputHandler;
 import com.myProject.transportCompany.delivery.Delivery;
-import com.myProject.transportCompany.delivery.deliveryStrategy.DeliveryStrategy;
 import com.myProject.transportCompany.delivery.deliveryStrategy.TruckDeliveryStrategy;
 import com.myProject.transportCompany.delivery.deliveryStrategy.VanDeliveryStrategy;
 import com.myProject.transportCompany.interfaces.IOrderManager;
@@ -16,9 +15,11 @@ import java.util.*;
 
 public class OrderManager implements IOrderManager {
 
+    private static volatile OrderManager orderInstance;
     List<Order> ordersHistory;
     Order currentOrder;
-    private static volatile OrderManager orderInstance;
+    private final List<Order> vanOrders = Collections.synchronizedList(new ArrayList<>());
+    private final Map<Vehicle, List<Order>> truckQueues = new HashMap<>();
 
     private OrderManager() {
         this.ordersHistory = new ArrayList<>();
@@ -36,9 +37,9 @@ public class OrderManager implements IOrderManager {
     }
 
     @Override
-    public void print() {
+    public void printOrderHistory() {
         ordersHistory.forEach(System.out::println);
-        System.out.println();
+        System.out.println(!ordersHistory.isEmpty() ? "" : ordersHistory.size() + " orders have been added." );
     }
 
     @Override
@@ -46,7 +47,7 @@ public class OrderManager implements IOrderManager {
         this.currentOrder = order;
     }
     @Override
-    public void discussOrder() {
+    public void discussOrder(Integer... choice) {
         if(currentOrder == null) {
             System.out.println("Nothing to discuss! Take order of next customer!");
             return;
@@ -58,12 +59,22 @@ public class OrderManager implements IOrderManager {
         }
         System.out.printf("Let's start negotiate the order. Currently, the price to pay: %.2f%n" , currentOrder.getPrice());
 
-        Scanner scanner = new Scanner(System.in);
-        Map<String, Runnable> orderMenu = new LinkedHashMap<>();
-        orderMenu.put("Do you want to complete the order without negotiating ", () -> completeOrder(currentOrder));
-        orderMenu.put("Let's negotiate ", () -> RouteManager.getRouteInstance().negotiatingMenu(currentOrder));
+        if(choice == null){
+            Scanner scanner = new Scanner(System.in);
+            Map<String, Runnable> orderMenu = new LinkedHashMap<>();
+            orderMenu.put("Do you want to complete the order without negotiating ", () -> completeOrder(currentOrder));
+            orderMenu.put("Let's negotiate ", () -> RouteManager.getRouteInstance().negotiatingMenu(currentOrder));
+            InputHandler.runMainMenu(scanner, orderMenu);
+        } else {
+            if(choice[0] == 1){
+                completeOrder(currentOrder);
+            } else if(choice[0] == 2){
+                RouteManager.getRouteInstance().negotiatingMenu(currentOrder);
+            } else {
+                System.out.println("Do not know what to do with the order");
+            }
+        }
 
-        InputHandler.runMainMenu(scanner, orderMenu);
     }
 
     @Override
@@ -118,29 +129,29 @@ public class OrderManager implements IOrderManager {
         Optional<Order> newOrder = new Order.Builder()
                 .customer(customer)
                 .route(route)
-                .id()
+                .id()//ids are always after customer, because id is created with the name of customer
                 .build();
 
         if(newOrder.isEmpty()){
             customer.updateComplaintCount(+1);
             System.out.println("Sorry, I can not take your order!");
-        } else {
-            newOrder.ifPresent(order -> {
-
-                Vehicle vehicle = order.getVehicle();
-                Delivery delivery;
-
-                if (vehicle.getType().equalsIgnoreCase("van")) {
-                    delivery = new Delivery(order, customer, route, "package", new VanDeliveryStrategy());
-                } else {
-                    delivery = new Delivery(order, customer, route, "package", new TruckDeliveryStrategy(vehicle.getCapacity()));
-                }
-
-                delivery.startDelivery();
-
-                currentOrder = order;
-            });
+            return;
         }
+        newOrder.ifPresent(order -> {
+
+            Vehicle vehicle = order.getVehicle();
+            Delivery delivery;
+
+            if (vehicle.getType().equalsIgnoreCase("van")) {
+                delivery = new Delivery(order, customer, route, "package", new VanDeliveryStrategy());
+            } else {
+                delivery = new Delivery(order, customer, route, "package", new TruckDeliveryStrategy(vehicle.getCapacity()));
+            }
+
+            ordersHistory.add(newOrder.get());
+            delivery.startDelivery();
+        });
+
     }
 
     private void runOrderMenu() {
@@ -156,20 +167,42 @@ public class OrderManager implements IOrderManager {
     }
 
     private void startAutoSettingOrder() {
+
+        Thread autoOrderThread = new Thread(() -> {
+
+            while(!Thread.currentThread().isInterrupted()){
+                try{
+                    Thread.sleep(750);
+                } catch (InterruptedException e){
+                    Thread.currentThread().interrupt();
+                    break;
+                }
+                Random random = new Random();
+                CustomerManager.getInstance().getList()
+                        .forEach(customer -> {
+                            createDelivery(customer);
+                            discussOrder(random.nextInt(2) + 1);
+                        });
+
+            }
+        });
+        autoOrderThread.setDaemon(true);
+        autoOrderThread.start();
+
         Thread updater = new Thread(() -> {
-            while (true) {
+            while (!Thread.currentThread().isInterrupted()) {
                 try {
-                    Thread.sleep(750); // 0.5s refresh
+                    Thread.sleep(5000); // 5s refresh
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                     break;
                 }
 
                 // Print status of vehicles + deliveries
-                System.out.println("\n[Auto Update]");
+                System.out.println("[Auto Update]");
                 VehicleManagerBuilder.getInstance().printAvailableVehicles();
                 CustomerManager.getInstance().printPendingCustomers();
-                // optionally show deliveries in progress/history
+                printOrderHistory();
             }
         });
         updater.setDaemon(true); // so it won’t block program exit
@@ -177,7 +210,7 @@ public class OrderManager implements IOrderManager {
     }
 
     @Override
-    public void initiateOrderManager(List<Customer> customers, List<Vehicle> vehicles) {
+    public void initiateOrderManager() {
         startAutoSettingOrder();
         runOrderMenu();
     }

@@ -58,7 +58,7 @@ public class CustomerManager implements ICustomerCreator {
         System.out.println();
     }
     @Override
-    public void printCustomersInTheQueue() {
+    public void printPendingCustomers() {
         System.out.println("Take order of these customers:");
         customers.forEach(c ->  System.out.println(c.toString()));
         System.out.println();

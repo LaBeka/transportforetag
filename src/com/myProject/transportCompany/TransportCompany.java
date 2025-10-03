@@ -25,11 +25,9 @@ public class TransportCompany {
         menu.put("Manage customers", () -> {
             Map<String, Runnable> submenu = new LinkedHashMap<>();
             submenu.put("List customers", () -> CustomerManager.getInstance().print());
-            submenu.put("Create order", () -> OrderManager.getInstance().initiateOrderManager(
-                    CustomerManager.getInstance().getList(),
-                    VehicleManagerBuilder.getInstance().getVehicles()));
-            submenu.put("List of customers that need to be served: ", () -> CustomerManager.getInstance().printCustomersInTheQueue());
-            submenu.put("List delivery history: ", () -> OrderManager.getInstance().print());
+            submenu.put("Create order", () -> OrderManager.getInstance().initiateOrderManager());
+            submenu.put("List of customers that need to be served: ", () -> CustomerManager.getInstance().printPendingCustomers());
+            submenu.put("List delivery history: ", () -> OrderManager.getInstance().printOrderHistory());
 
             InputHandler.runMainMenu(scanner, submenu);
         });
@@ -38,6 +36,12 @@ public class TransportCompany {
     }
 
 
+    public void autoRun(){
+        List<Driver> driverList = DriverManager.getInstance().getDriverList();
+        VehicleManagerBuilder.getInstance().initializeVehicles(driverList);
+        CustomerManager.getInstance().getList();
+        OrderManager.getInstance().initiateOrderManager();
+    }
     public void run() {
         List<Driver> driverList = DriverManager.getInstance().getDriverList();
         VehicleManagerBuilder.getInstance().initializeVehicles(driverList);
