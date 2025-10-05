@@ -22,6 +22,11 @@ public class Van extends Vehicle {
             return this;
         }
 
+        public Builder isAvailable(boolean isAvailable) {
+            this.isAvailable = isAvailable;
+            return this;
+        }
+
         @Override
         public Van build() {
             return new Van(this);

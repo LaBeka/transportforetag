@@ -42,7 +42,7 @@ public class TransportCompany {
         List<Driver> driverList = DriverManager.getInstance().getDriverList();
         VehicleManagerBuilder.getInstance().initializeVehicles(driverList);
         CustomerManager.getInstance().getList();
-        runCompanyMenu();
+//        runCompanyMenu();
     }
 
     public static TransportCompany getInstance(){

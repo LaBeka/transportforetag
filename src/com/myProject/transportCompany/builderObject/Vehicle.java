@@ -4,17 +4,17 @@ import com.myProject.transportCompany.interfaces.Assignable;
 import com.myProject.transportCompany.model.Driver;
 import com.myProject.transportCompany.model.Order;
 
+import java.util.Objects;
+
 
 public abstract class Vehicle implements Assignable {
 
     private final String regNumber;
-    private double capacity;
     private Driver driver;
     private boolean isAvailable;
 
     public Vehicle(Builder builder) {
         this.regNumber = builder.regNumber;
-        this.capacity = builder.capacity;
         this.isAvailable = builder.isAvailable;
     }
 
@@ -36,12 +36,6 @@ public abstract class Vehicle implements Assignable {
 
     public String getRegNumber() { return regNumber; }
 
-    public double getCapacity() { return capacity;}
-
-    public void setCapacity(double capacity) {
-        this.capacity += capacity;
-    }
-
     public Driver getDriver() { return driver; }
 
     public boolean isAvailable() { return isAvailable; }
@@ -52,28 +46,27 @@ public abstract class Vehicle implements Assignable {
 
     @Override
     public String toString() {
-        return "%s with reg number: %s %s %s for route".formatted(getType(), regNumber, capacity, isAvailable? "is available" : "IS NOT available");
+        return "%s with reg number: %s %s for route".formatted(getType(), regNumber, isAvailable? "is available" : "IS NOT available");
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Vehicle vehicle = (Vehicle) o;
+        return Objects.equals(regNumber, vehicle.regNumber);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(regNumber);
     }
 
     public static abstract class Builder<T extends Vehicle, B extends Builder<T, B>> {
         private String regNumber;
-        private double capacity;
-        private boolean isAvailable;
+        protected boolean isAvailable;
 
         public B regNumber(String regNumber) {
             this.regNumber = regNumber;
-            return self();
-        }
-        public B capacity(double capacity) {
-            this.capacity = capacity;
-            return self();
-        }
-        public B isAvailable(boolean available) {
-            if(capacity < 100.0){
-                this.isAvailable = false;
-            } else {
-                this.isAvailable = available;
-            }
             return self();
         }
 

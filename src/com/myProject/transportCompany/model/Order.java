@@ -1,6 +1,8 @@
 package com.myProject.transportCompany.model;
 
 
+import com.myProject.transportCompany.builderObject.Truck;
+import com.myProject.transportCompany.builderObject.Van;
 import com.myProject.transportCompany.builderObject.Vehicle;
 import com.myProject.transportCompany.discountstrategy.RouteStrategy;
 import com.myProject.transportCompany.exceptions.VehicleNotAvailableException;
@@ -88,10 +90,14 @@ public class Order {
             result = baseCost * multiplier;
         }
 
-        vehicle.ifPresent(v -> {
-            this.vehicle = v;
-            v.setCapacity(-customer.getWeight());
-            v.setAvailable(false);
+        vehicle.ifPresent(vehc -> {
+            this.vehicle = vehc;
+            if(vehc instanceof Van v){
+                v.setAvailable(false);
+            } else if(vehc instanceof Truck t){
+                t.setCapacity(-customer.getWeight());
+                t.setAvailable(false);
+            }
         });
         return result;
     }

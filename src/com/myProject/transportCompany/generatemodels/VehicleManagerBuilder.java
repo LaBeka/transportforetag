@@ -92,6 +92,13 @@ public class VehicleManagerBuilder implements IVehicleCreator {
     public void initializeVehicles(List<Driver> drivers) {
         this.drivers = drivers;
         generateVehicles();
+        vehicles.forEach(vehicle -> {
+            if(vehicle instanceof Truck truck){
+                System.out.println(truck.toString());
+            } else if(vehicle instanceof Van van){
+                System.out.println(van.toString());
+            }
+        });
     }
 
     @Override
@@ -112,7 +119,6 @@ public class VehicleManagerBuilder implements IVehicleCreator {
                 createVehicle(
                         new Van.Builder()
                                 .regNumber("XYZ-" + regSuffix++)
-                                .capacity(1040.0)
                                 .isAvailable(true)
                                 .build(), Optional.of(driver));
             }
@@ -121,12 +127,11 @@ public class VehicleManagerBuilder implements IVehicleCreator {
         // Add some vehicles with no drivers (optional)
         createVehicle(new Van.Builder()
                 .regNumber("XYZ-" + regSuffix++)
-                .capacity(10.0).isAvailable(true)
                 .build(),
                 Optional.empty());
         createVehicle(new Truck.Builder()
                 .regNumber("XYZ-" + regSuffix++)
-                .capacity(900.0)
+                .capacity(90.0)
                 .isAvailable(true)
                 .build(),
                 Optional.empty());

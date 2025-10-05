@@ -1,6 +1,8 @@
 package com.myProject.transportCompany.generatemodels;
 
 import com.myProject.transportCompany.InputHandler;
+import com.myProject.transportCompany.builderObject.Truck;
+import com.myProject.transportCompany.builderObject.Van;
 import com.myProject.transportCompany.delivery.Delivery;
 import com.myProject.transportCompany.delivery.deliveryStrategy.DeliveryStrategy;
 import com.myProject.transportCompany.delivery.deliveryStrategy.TruckDeliveryStrategy;
@@ -133,12 +135,12 @@ public class OrderManager implements IOrderManager {
             newOrder.ifPresent(order -> {
 
                 Vehicle vehicle = order.getVehicle();
-                Delivery delivery;
+                Delivery delivery = null;
 
-                if (vehicle.getType().equalsIgnoreCase("van")) {
+                if (vehicle instanceof Van) {
                     delivery = new Delivery(order, customer, route, "package", new VanDeliveryStrategy());
-                } else {
-                    delivery = new Delivery(order, customer, route, "package", new TruckDeliveryStrategy(vehicle.getCapacity()));
+                } else if(vehicle instanceof Truck t){
+                    delivery = new Delivery(order, customer, route, "package", new TruckDeliveryStrategy(t.getCapacity()));
                 }
 
                 delivery.startDelivery();
