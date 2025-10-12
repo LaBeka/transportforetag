@@ -1,9 +1,6 @@
 package com.myProject.transportCompany;
 
-import com.myProject.transportCompany.generatemodels.CustomerManager;
-import com.myProject.transportCompany.generatemodels.DriverManager;
-import com.myProject.transportCompany.generatemodels.OrderManager;
-import com.myProject.transportCompany.generatemodels.VehicleManagerBuilder;
+import com.myProject.transportCompany.generatemodels.*;
 import com.myProject.transportCompany.model.*;
 
 import java.util.*;
@@ -25,9 +22,9 @@ public class TransportCompany {
         menu.put("Manage customers", () -> {
             Map<String, Runnable> submenu = new LinkedHashMap<>();
             submenu.put("List customers", () -> CustomerManager.getInstance().print());
-            submenu.put("Create order", () -> OrderManager.getInstance().initiateOrderManager());
+//            submenu.put("Create order", () -> OrderManager.getInstance().initiateOrderManager());
             submenu.put("List of customers that need to be served: ", () -> CustomerManager.getInstance().printPendingCustomers());
-            submenu.put("List delivery history: ", () -> OrderManager.getInstance().printOrderHistory());
+//            submenu.put("List delivery history: ", () -> OrderManager.getInstance().printOrderHistory());
 
             InputHandler.runMainMenu(scanner, submenu);
         });
@@ -40,17 +37,16 @@ public class TransportCompany {
         List<Driver> driverList = DriverManager.getInstance().getDriverList();
         VehicleManagerBuilder.getInstance().initializeVehicles(driverList);
         CustomerManager.getInstance().getList();
-        OrderManager.getInstance().initiateOrderManager();
+        AutoOrderManager.getInstance().runAutoOrderManager();
     }
     public void run() {
         List<Driver> driverList = DriverManager.getInstance().getDriverList();
         VehicleManagerBuilder.getInstance().initializeVehicles(driverList);
         CustomerManager.getInstance().getList();
-//        runCompanyMenu();
+        runCompanyMenu();
     }
 
     public static TransportCompany getInstance(){
-
         if(singleObject == null){
             synchronized (TransportCompany.class){
                 if(singleObject == null){

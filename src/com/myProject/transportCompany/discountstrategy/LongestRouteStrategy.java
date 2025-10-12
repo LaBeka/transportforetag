@@ -1,6 +1,6 @@
 package com.myProject.transportCompany.discountstrategy;
 
-import com.myProject.transportCompany.generatemodels.OrderManager;
+//import com.myProject.transportCompany.generatemodels.OrderManager;
 import com.myProject.transportCompany.generatemodels.RouteManager;
 import com.myProject.transportCompany.model.Location;
 import com.myProject.transportCompany.model.Order;
@@ -29,6 +29,6 @@ public class LongestRouteStrategy implements RouteStrategy{
         order.setPrice(order.getRoute().getDistance() / 10.0);
         System.out.println("order pricce: " + order.getPrice());
 
-        OrderManager.getInstance().updateCurrentOrder(order);
+//        OrderManager.getInstance().updateCurrentOrder(order);
     }
 }

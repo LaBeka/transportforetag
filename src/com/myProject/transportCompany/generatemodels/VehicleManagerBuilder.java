@@ -93,13 +93,6 @@ public class VehicleManagerBuilder implements IVehicleCreator {
     public void initializeVehicles(List<Driver> drivers) {
         this.drivers = drivers;
         generateVehicles();
-        vehicles.forEach(vehicle -> {
-            if(vehicle instanceof Truck truck){
-                System.out.println(truck.toString());
-            } else if(vehicle instanceof Van van){
-                System.out.println(van.toString());
-            }
-        });
     }
 
     @Override

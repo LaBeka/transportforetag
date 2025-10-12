@@ -2,7 +2,7 @@ package com.myProject.transportCompany.delivery.deliveryStrategy;
 
 import com.myProject.transportCompany.delivery.Delivery;
 import com.myProject.transportCompany.delivery.Status;
-import com.myProject.transportCompany.generatemodels.OrderManager;
+import com.myProject.transportCompany.generatemodels.AutoOrderManager;
 
 public class VanDeliveryStrategy implements DeliveryStrategy {
     @Override
@@ -20,6 +20,6 @@ public class VanDeliveryStrategy implements DeliveryStrategy {
         // after route
         delivery.setStatus(Status.COMPLETED);
         System.out.printf("Delivery completed by Van. Order: %s%n", delivery.getOrder().toString());
-        OrderManager.getInstance().completeOrder(delivery.getOrder());
+        AutoOrderManager.getInstance().completeOrder(delivery.getOrder());
     }
 }
