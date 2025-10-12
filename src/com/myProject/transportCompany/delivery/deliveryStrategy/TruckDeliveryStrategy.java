@@ -38,7 +38,7 @@ public class TruckDeliveryStrategy implements DeliveryStrategy {
             }
             queuedDeliveries.clear();
             currentLoad = 0;
-            AutoOrderManager.getInstance().completeOrder(delivery.getOrder());
+//            AutoOrderManager.getInstance().completeOrder(delivery.getOrder());
 
         }
     }

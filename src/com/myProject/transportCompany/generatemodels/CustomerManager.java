@@ -44,9 +44,12 @@ public class CustomerManager implements ICustomerCreator {
 
     @Override
     public List<Customer> getList(){
-        return Collections.unmodifiableList(customers);
+        return customers;
     }
 
+    private void delete(Customer customer){
+        customers.remove(customer);
+    }
     @Override
     public void createCustomer(Customer customer) {
         this.customers.add(customer);
@@ -77,6 +80,9 @@ public class CustomerManager implements ICustomerCreator {
         customers.stream()
                 .filter( c -> c.equals(order.getCustomer()))
                 .findFirst()
-                .ifPresent(customer -> customer.setServed(true));
+                .ifPresent(customer -> {
+                    customer.setServed(true);
+                    this.delete(customer);
+                });
     }
 }

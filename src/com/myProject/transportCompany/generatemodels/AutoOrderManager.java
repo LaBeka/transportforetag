@@ -135,31 +135,6 @@ public class AutoOrderManager {
         thread.start();
     }
 
-    private void startAutoVanOrder() {
-        Thread vanThread = new Thread(() -> {
-            while(!Thread.currentThread().isInterrupted()){
-                try{
-                    Thread.sleep(2750);
-                } catch (InterruptedException e){
-                    Thread.currentThread().interrupt();
-                    break;
-                }
-                CustomerManager.getInstance().getList()
-                    .forEach(customer -> {
-                        if(customer.getPackageInfo().split(" ")[0].equalsIgnoreCase("fast")){
-                            Optional<Order> newOrder = createDelivery(customer);
-                            newOrder.ifPresent(order -> {
-                                if(order.getVehicle() instanceof Van) {
-                                    discussOrder(random.nextInt(3) + 1, newOrder.get());
-                                }
-                            });
-                        }
-                    });
-            }
-        });
-        vanThread.start();
-    }
-
     private void startAutoTruckOrder(){
         Thread truckThread = new Thread(() -> {
             while(!Thread.currentThread().isInterrupted()){

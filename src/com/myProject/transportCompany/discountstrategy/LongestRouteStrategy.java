@@ -1,6 +1,6 @@
 package com.myProject.transportCompany.discountstrategy;
 
-//import com.myProject.transportCompany.generatemodels.OrderManager;
+import com.myProject.transportCompany.generatemodels.AutoOrderManager;
 import com.myProject.transportCompany.generatemodels.RouteManager;
 import com.myProject.transportCompany.model.Location;
 import com.myProject.transportCompany.model.Order;
@@ -9,11 +9,6 @@ import com.myProject.transportCompany.model.Route;
 import java.util.List;
 
 public class LongestRouteStrategy implements RouteStrategy{
-
-    @Override
-    public Route chooseRoute(List<Route> routes) {
-        return null;
-    }
 
     @Override
     public void chooseRoute(Order order) {
@@ -29,6 +24,6 @@ public class LongestRouteStrategy implements RouteStrategy{
         order.setPrice(order.getRoute().getDistance() / 10.0);
         System.out.println("order pricce: " + order.getPrice());
 
-//        OrderManager.getInstance().updateCurrentOrder(order);
+        AutoOrderManager.getInstance().completeOrder(order);
     }
 }

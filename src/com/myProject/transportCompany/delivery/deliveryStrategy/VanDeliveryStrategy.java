@@ -20,6 +20,6 @@ public class VanDeliveryStrategy implements DeliveryStrategy {
         // after route
         delivery.setStatus(Status.COMPLETED);
         System.out.printf("Delivery completed by Van. Order: %s%n", delivery.getOrder().toString());
-        AutoOrderManager.getInstance().completeOrder(delivery.getOrder());
+//        AutoOrderManager.getInstance().completeOrder(delivery.getOrder());
     }
 }

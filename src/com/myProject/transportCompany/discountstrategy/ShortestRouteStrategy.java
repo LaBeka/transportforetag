@@ -8,10 +8,6 @@ import java.util.Comparator;
 import java.util.List;
 
 public class ShortestRouteStrategy implements RouteStrategy{
-    @Override
-    public Route chooseRoute(List<Route> routes) {
-        return routes.stream().min(Comparator.comparingDouble(Route::getDistance)).orElse(null);
-    }
 
     @Override
     public void chooseRoute(Order order) {
@@ -22,5 +18,6 @@ public class ShortestRouteStrategy implements RouteStrategy{
 //        AutoOrderManager.getInstance().updateCurrentOrder(order);
         System.out.println(route.toString() + " for the price " + order.getPrice());
         System.out.println("Fast but Expensive Choose Route");
+        AutoOrderManager.getInstance().completeOrder(order);
     }
 }
